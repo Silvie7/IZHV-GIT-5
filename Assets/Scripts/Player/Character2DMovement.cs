@@ -54,6 +54,8 @@ public class Character2DMovement : MonoBehaviour
 	private Character2DController mController;
 	private CharacterSelector mSelector;
 	private InputManager mInput;
+
+    public GameObject spriteObject;
 	
     /// <summary>
     /// Called before the first frame update.
@@ -72,6 +74,14 @@ public class Character2DMovement : MonoBehaviour
         mFallTimeoutDelta = FallTimeout;
 
         mHeadingRight = true;
+
+        // get sprite reference
+        Invoke("FindSprite", .5f);
+    }
+
+    public void FindSprite()
+    {
+        spriteObject = GameObject.FindGameObjectWithTag("PlayerSprite");
     }
 
     /// <summary>
@@ -82,6 +92,22 @@ public class Character2DMovement : MonoBehaviour
 	    mTargetHorSpeed = mInput.sprint ? SprintSpeed : MoveSpeed;
 	    if (mInput.move == Vector2.zero)
 	    { mTargetHorSpeed = 0.0f; }
+
+        // flip sprite direction
+        if (spriteObject != null)
+        {
+            Debug.Log("mInput.move.x");
+            if (mInput.move.x > 0)
+            {
+                Debug.Log("forward");
+                spriteObject.transform.localScale = new Vector3(1, 1, 1);
+            }
+            if (mInput.move.x < 0)
+            {
+                Debug.Log("backward");
+                spriteObject.transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
     }
     
     /// <summary>
@@ -226,6 +252,44 @@ public class Character2DMovement : MonoBehaviour
 			var grounded = mController.isGrounded;
 			var jump = mInput.jump;
 			var falling = !mController.isGrounded && mFallTimeoutDelta <= 0.0f;
+
+
+            animator.SetFloat("Speed", speed);
+            animator.SetFloat("MoveSpeed", moveSpeed);
+
+            if (crouch == true)
+            {
+                animator.SetBool("Crouch", true);
+            }
+            else
+            {
+                animator.SetBool("Crouch", false);
+            }
+            if (jump == true)
+            {
+                animator.SetBool("Jump", true);
+            }
+            else
+            {
+                animator.SetBool("Jump", false);
+            }
+            if (falling == true)
+            {
+                animator.SetBool("Fall", true);
+            }
+            else
+            {
+                animator.SetBool("Fall", false);
+            }
+            if (grounded == true)
+            {
+                animator.SetBool("Grounded", true);
+            }
+            else
+            {
+                animator.SetBool("Grounded", false);
+            }
+
 
 			/*
 			 * Task #1a: Passing properties to the Animator

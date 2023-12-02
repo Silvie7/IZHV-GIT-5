@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Environment
   - CinemachineTarget
+  - PlayerSprite
   layers:
   - Default
   - TransparentFX

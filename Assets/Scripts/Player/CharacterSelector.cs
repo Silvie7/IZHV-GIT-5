@@ -99,6 +99,7 @@ public class CharacterSelector : MonoBehaviour
 	    { Destroy(mCharacter); }
 	    mCharacter = Instantiate(characters[selection - 1], transform);
 	    mCurrentCharacter = selection;
+        GetComponent<Character2DMovement>().Invoke("FindSprite", .5f);
 	    
 	    // Update references.
 	    mAnimator = mCharacter.GetComponent<Animator>();
